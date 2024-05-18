@@ -6,7 +6,7 @@ import { TaskService } from './task.service';
 import { TaskSchema } from '../task/schemas/task.schema';
 import { AuthenticationMiddleware } from '../middleware/middleware';
 import { ConfigModule } from '@nestjs/config';
-
+import { TaskGateway } from './task.gateway'
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,7 +18,7 @@ import { ConfigModule } from '@nestjs/config';
   })
     ,MongooseModule.forFeature([{ name: 'Task', schema: TaskSchema}])],
   controllers: [TaskController],
-  providers: [TaskService],
+  providers: [TaskService,TaskGateway],
   exports: [TaskService],
 
 })
