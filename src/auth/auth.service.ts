@@ -1,4 +1,3 @@
-// src/auth/auth.service.ts
 import { Injectable,HttpException, HttpStatus,BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {TaskService } from '../task/task.service';
