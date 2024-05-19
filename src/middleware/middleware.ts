@@ -1,6 +1,5 @@
 import { Injectable, NestMiddleware, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { Strategy } from "passport-jwt";
 @Injectable()
 export class AuthenticationMiddleware implements NestMiddleware {
     constructor(private readonly jwtService: JwtService) { }
