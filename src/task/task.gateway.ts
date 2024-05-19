@@ -10,7 +10,7 @@ import { Task } from './schemas/task.schema';
 import { OnModuleInit } from '@nestjs/common';
 
 @WebSocketGateway()
-export class TaskGateway  {
+export class TaskGateway implements OnModuleInit  {
   @WebSocketServer()
   server: Server;
 
