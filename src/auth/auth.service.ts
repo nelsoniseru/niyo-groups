@@ -1,6 +1,5 @@
 import { Injectable,HttpException, HttpStatus,BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import {TaskService } from '../task/task.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
