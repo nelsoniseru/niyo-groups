@@ -7,39 +7,51 @@ import {
 import { Server } from 'socket.io';
 import { TaskService } from './task.service';
 import { Task } from './schemas/task.schema';
+import { OnModuleInit } from '@nestjs/common';
 
 @WebSocketGateway()
-export class TaskGateway {
+export class TaskGateway  {
   @WebSocketServer()
   server: Server;
 
   constructor(private readonly taskService: TaskService) {}
-
+onModuleInit() {
+  this.server.on("connection",(socket)=>{
+   console.log(socket.id)
+   console.log("connceted")
+  })
+}
   @SubscribeMessage('findAllTasks')
   async findAll(@MessageBody() data: any): Promise<void> {
-    const tasks = await this.taskService.findAll(data.user);
-    this.server.emit('tasks', tasks);
-  }
-
-  async handleTaskChange(event: string, task: Task) {
-    this.server.emit(event, task);
+    const tasks = await this.taskService.findAll(data.userId);
+    this.server.emit('tasks',tasks);
   }
 
   @SubscribeMessage('createTask')
   async create(@MessageBody() task: Task): Promise<void> {
+
     const createdTask = await this.taskService.create(task);
-    this.handleTaskChange('taskCreated', createdTask);
+    console.log(createdTask)
+    this.server.emit('taskCreated', createdTask);
   }
 
   @SubscribeMessage('updateTask')
-  async update(@MessageBody() data: { id: string; task: Task }): Promise<void> {
-    const updatedTask = await this.taskService.update(data.id, data.task);
-    this.handleTaskChange('taskUpdated', updatedTask);
+  async update(@MessageBody() data: { task_id: string; task: Task }): Promise<void> {
+    const updatedTask = await this.taskService.update(data.task_id, data.task);
+    this.server.emit('taskUpdated', updatedTask);
+  }
+
+  @SubscribeMessage('findOneTask')
+  async findOne(@MessageBody() data:any): Promise<void> {
+    const result = await this.taskService.findOne(data.id);
+    console.log(data)
+    console.log(result)
+    this.server.emit('OneTask',result);
   }
 
   @SubscribeMessage('deleteTask')
-  async remove(@MessageBody() id: string): Promise<void> {
-    await this.taskService.remove(id);
-    this.server.emit('taskDeleted', id);
+  async remove(@MessageBody() data:any): Promise<void> {
+  let result =  await this.taskService.remove(data.id);
+    this.server.emit('taskDeleted', result);
   }
 }

@@ -5,6 +5,4 @@ export class TaskDto {
   title: string;
   @IsNotEmpty()
   description: string;
-  @IsNotEmpty()
-  isCompleted: string;
 }

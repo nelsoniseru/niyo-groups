@@ -15,7 +15,7 @@ export class TaskService {
   }
 
   async findOne(id: string): Promise<Task> {
-    return await this.taskModel.findOne({ _id: id });
+    return await this.taskModel.findOne({ _id:id });
   }
 
   async create(task: Task): Promise<Task> {
@@ -38,12 +38,12 @@ export class TaskService {
       const firstErrorMessage = Object.values(firstError.constraints)[0];
       throw new BadRequestException(`${firstErrorMessage}`);
     }
-    await this.taskModel.updateOne({ _id: id }, { $set: task });
-    return this.taskModel.findOne({ _id: id });
+    await this.taskModel.updateOne({ _id:id }, { $set: task });
+    return this.taskModel.findOne({ _id:id });
   }
 
   async remove(id: string) {
-    await this.taskModel.deleteOne({ _id: id });
+    await this.taskModel.deleteOne({ _id:id });
     return { message: "deleted successfully", statusCode: 200 }
   }
 }
